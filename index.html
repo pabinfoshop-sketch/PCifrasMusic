@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCifrasMusic</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="theme-color" content="#D4AF37">
+</head>
+<body>
+    <!-- SPLASH SCREEN - EXACT MATCH TO YOUR SCREENSHOT -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-welcome">SEJA BEM-VINDO</div>
+            
+            <div class="splash-icon">
+                <!-- Guitar (left) -->
+                <div class="splash-guitar">🎸</div>
+                
+                <!-- Golden PC Guitar Pick (center) -->
+                <div class="splash-pick">
+                    <div class="pick-inner">
+                        <div class="pick-text">PC</div>
+                    </div>
+                </div>
+                
+                <!-- Accordion (right) -->
+                <div class="splash-accordion">🪗</div>
+            </div>
+            
+            <div class="splash-title">
+                <span class="title-pcifras">PCifras</span><span class="title-music">Music</span>
+            </div>
+            
+            <div class="splash-subtitle">CIFRAS &amp; REPERTÓRIOS</div>
+            
+            <div class="splash-progress">
+                <div class="progress-bar"></div>
+            </div>
+            
+            <div class="splash-footer">
+                Criado com carinho por PauloC
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="app" style="display: none;">
+        <!-- HEADER -->
+        <header>
+            <div class="logo">
+                <span style="font-size: 1.6rem;">🎸</span>
+                <h1>PCifrasMusic</h1>
+                <span id="premium-badge" class="premium-badge" style="display:none;">PREMIUM</span>
+            </div>
+            <button id="btn-premium-header" class="secondary" style="padding:6px 12px;font-size:0.75rem;">Assinar</button>
+        </header>
+
+        <div class="container">
+
+            <!-- INÍCIO / HOME -->
+            <div id="section-home" class="section active">
+                <div class="hero">
+                    <h2>Bem-vindo ao PCifrasMusic!</h2>
+                    <p>Afinador preciso, biblioteca de acordes e escalas, metrônomo e suas cifras personalizadas. Tudo em português.</p>
+                    <div class="hero-actions">
+                        <button onclick="navigateTo('afinador')">Abrir Afinador</button>
+                        <button onclick="navigateTo('acordes')" class="secondary">Explorar Acordes</button>
+                    </div>
+                </div>
+
+                <div class="quick-access">
+                    <h3>Acesso Rápido</h3>
+                    <div class="quick-grid">
+                        <div class="quick-card" onclick="navigateTo('afinador')">
+                            <span>🎤</span>
+                            <div>Afinador</div>
+                        </div>
+                        <div class="quick-card" onclick="navigateTo('acordes')">
+                            <span>🎸</span>
+                            <div>Acordes</div>
+                        </div>
+                        <div class="quick-card" onclick="navigateTo('escalas')">
+                            <span>📏</span>
+                            <div>Escalas</div>
+                        </div>
+                        <div class="quick-card" onclick="navigateTo('metronomo')">
+                            <span>⏱️</span>
+                            <div>Metrônomo</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="text-align:center;margin-top:10px;">
+                    <p style="font-size:0.85rem;opacity:0.8;">Toque no ícone da barra inferior para navegar entre as seções.</p>
+                </div>
+            </div>
+
+            <!-- AFINADOR -->
+            <div id="section-afinador" class="section">
+                <h2>Afinador de Violão</h2>
+                <div class="card">
+                    <div id="tuner-display">
+                        <div id="note-display" class="note">--</div>
+                        <div id="cents-display" class="cents">0 cents</div>
+                        <div class="tuner-bar">
+                            <div class="fill" id="tuner-fill" style="width:50%"></div>
+                            <div class="center"></div>
+                        </div>
+                        <div id="freq-display" style="font-size:0.9rem;opacity:0.7;margin-top:4px;">Frequência: -- Hz</div>
+                    </div>
+                    
+                    <div style="display:flex;gap:10px;margin-top:16px;">
+                        <button id="btn-start-tuner" onclick="startTuner()">Iniciar Microfone</button>
+                        <button id="btn-stop-tuner" onclick="stopTuner()" class="secondary" style="display:none;">Parar</button>
+                    </div>
+                    
+                    <p style="font-size:0.8rem;margin-top:12px;opacity:0.75;">
+                        Toque uma corda e observe a nota e os cents de afinação. 
+                        Use fones ou alto-falante para melhor precisão.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ACORDES -->
+            <div id="section-acordes" class="section">
+                <h2>Biblioteca de Acordes</h2>
+                
+                <div class="search-bar">
+                    <input type="text" id="chord-search" placeholder="Buscar acorde (ex: C, Am, G7...)" onkeyup="filterChords()">
+                </div>
+                
+                <div class="filter-tabs">
+                    <button class="filter-btn active" data-filter="all" onclick="setChordFilter('all')">Todos</button>
+                    <button class="filter-btn" data-filter="major" onclick="setChordFilter('major')">Maiores</button>
+                    <button class="filter-btn" data-filter="minor" onclick="setChordFilter('minor')">Menores</button>
+                    <button class="filter-btn" data-filter="seventh" onclick="setChordFilter('seventh')">Com 7ª</button>
+                    <button class="filter-btn" data-filter="premium" onclick="setChordFilter('premium')">Premium</button>
+                </div>
+                
+                <div id="chord-grid" class="chord-grid"></div>
+                
+                <p style="font-size:0.75rem;opacity:0.6;margin-top:8px;text-align:center;">
+                    12 acordes gratuitos • 12 premium (assine para desbloquear)
+                </p>
+            </div>
+
+            <!-- ESCALAS -->
+            <div id="section-escalas" class="section">
+                <h2>Escalas Musicais</h2>
+                <div class="search-bar">
+                    <input type="text" id="scale-search" placeholder="Buscar escala..." onkeyup="filterScales()">
+                </div>
+                
+                <div id="scale-grid" class="chord-grid"></div>
+                
+                <p style="font-size:0.75rem;opacity:0.6;margin-top:8px;text-align:center;">
+                    Toque as notas da escala e visualize o diagrama.
+                </p>
+            </div>
+
+            <!-- METRÔNOMO -->
+            <div id="section-metronomo" class="section">
+                <h2>Metrônomo</h2>
+                <div class="card">
+                    <div style="text-align:center;">
+                        <div id="bpm-display">120</div>
+                        <div style="font-size:0.8rem;opacity:0.7;margin-bottom:8px;">BPM</div>
+                        
+                        <input type="range" id="bpm-slider" min="30" max="220" step="1" value="120" 
+                               style="width:100%;margin:8px 0;" oninput="updateBPM()">
+                        
+                        <div style="display:flex;gap:8px;justify-content:center;margin:12px 0;">
+                            <button onclick="decreaseBPM()">−</button>
+                            <button onclick="increaseBPM()">+</button>
+                            <button id="btn-metronome" onclick="toggleMetronome()">Iniciar</button>
+                            <button onclick="tapTempo()" class="secondary">Tap</button>
+                        </div>
+                        
+                        <div class="metronome-visual">
+                            <div id="beat-bar" class="beat"></div>
+                        </div>
+                        
+                        <div style="font-size:0.8rem;opacity:0.6;margin-top:6px;">
+                            Toque "Tap" repetidamente para definir o tempo
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAVORITOS -->
+            <div id="section-favoritos" class="section">
+                <h2>Favoritos</h2>
+                
+                <div class="card">
+                    <h3 style="font-size:1rem;margin-bottom:10px;color:#ccc;">Acordes e Escalas Favoritos</h3>
+                    <div id="favorites-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;"></div>
+                </div>
+                
+                <div class="card">
+                    <h3 style="font-size:1rem;margin-bottom:10px;color:#ccc;">Minhas Cifras Personalizadas</h3>
+                    
+                    <form id="add-cifra-form" onsubmit="addCustomCifra(event)">
+                        <input type="text" id="cifra-title" placeholder="Título da música" required style="width:100%;margin-bottom:6px;padding:10px;border-radius:8px;border:1px solid #8B5A2B;background:#2C2118;color:#F5E8C7;">
+                        <input type="text" id="cifra-artist" placeholder="Artista (opcional)" style="width:100%;margin-bottom:6px;padding:10px;border-radius:8px;border:1px solid #8B5A2B;background:#2C2118;color:#F5E8C7;">
+                        <textarea id="cifra-text" placeholder="Cole aqui a cifra (acordes e letras)" rows="4" required style="width:100%;padding:10px;border-radius:8px;border:1px solid #8B5A2B;background:#2C2118;color:#F5E8C7;font-family:monospace;font-size:0.85rem;"></textarea>
+                        <button type="submit" style="width:100%;margin-top:8px;">Salvar Minha Cifra</button>
+                    </form>
+                    
+                    <div id="my-cifras-list" style="margin-top:16px;"></div>
+                </div>
+            </div>
+
+            <!-- PREMIUM -->
+            <div id="section-premium" class="section">
+                <h2>Assinatura Premium</h2>
+                
+                <div class="card" style="text-align:center;">
+                    <div style="font-size:2.5rem;margin-bottom:8px;">⭐</div>
+                    <h3 style="color:#D4AF37;">PCifrasMusic Premium</h3>
+                    <div style="font-size:1.8rem;font-weight:700;color:#D4AF37;margin:8px 0;">R$ 49,90<span style="font-size:0.7rem;font-weight:400;">/ano</span></div>
+                    
+                    <p style="font-size:0.9rem;opacity:0.85;margin:12px 0;">
+                        Desbloqueie todos os 12 acordes premium, escalas avançadas e recursos extras.
+                    </p>
+                    
+                    <div id="premium-status" style="margin:16px 0;font-weight:600;"></div>
+                    
+                    <button onclick="subscribePremium()" id="btn-subscribe" style="width:100%;padding:14px;font-size:1rem;">
+                        Assinar agora (7 dias grátis)
+                    </button>
+                    
+                    <button onclick="resetPremium()" class="secondary" style="margin-top:10px;width:100%;font-size:0.8rem;">
+                        Resetar (teste)
+                    </button>
+                    
+                    <p style="font-size:0.7rem;margin-top:14px;opacity:0.6;">
+                        Simulação local • Sem pagamento real • Cancele a qualquer momento
+                    </p>
+                </div>
+                
+                <div class="card">
+                    <h4 style="font-size:0.95rem;margin-bottom:6px;">Benefícios Premium:</h4>
+                    <ul style="font-size:0.85rem;line-height:1.5;opacity:0.9;padding-left:18px;">
+                        <li>Todos os acordes desbloqueados</li>
+                        <li>Escalas avançadas e modos</li>
+                        <li>Exportar cifras personalizadas</li>
+                        <li>Sem anúncios (futuro)</li>
+                        <li>Suporte prioritário</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- BOTTOM NAV -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active" data-section="home" onclick="navigateTo('home')">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <span>Início</span>
+            </a>
+            <a href="#" class="nav-item" data-section="afinador" onclick="navigateTo('afinador')">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                <span>Afinador</span>
+            </a>
+            <a href="#" class="nav-item" data-section="acordes" onclick="navigateTo('acordes')">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
+                <span>Acordes</span>
+            </a>
+            <a href="#" class="nav-item" data-section="escalas" onclick="navigateTo('escalas')">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"></path></svg>
+                <span>Escalas</span>
+            </a>
+            <a href="#" class="nav-item" data-section="favoritos" onclick="navigateTo('favoritos')">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                <span>Favoritos</span>
+            </a>
+            <a href="#" class="nav-item" data-section="premium" onclick="navigateTo('premium')">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                <span>Premium</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- MODAL ACORDE / ESCALA -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title"></h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <div id="modal-diagram" style="margin:12px 0;text-align:center;"></div>
+            
+            <div id="modal-info" style="margin:10px 0;font-size:0.9rem;"></div>
+            
+            <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+                <button id="modal-play-btn" onclick="playModalSound()">Tocar Nota</button>
+                <button id="modal-favorite-btn" onclick="toggleFavoriteFromModal()" class="secondary">⭐ Favoritar</button>
+                <button onclick="closeModal()" class="secondary">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast"></div>
+
+    <script src="js/app.js"></script>
+    <script src="js/tuner.js"></script>
+    <script src="js/chords.js"></script>
+    <script src="js/scales.js"></script>
+    <script src="js/metronome.js"></script>
+    <script src="js/favorites.js"></script>
+    
+    <script>
+        function initializeApp() {
+            const splash = document.getElementById('splash-screen');
+            const app = document.getElementById('app');
+            
+            let splashHidden = false;
+            
+            function hideSplash() {
+                if (splashHidden) return;
+                splashHidden = true;
+                splash.style.transition = 'opacity 0.4s ease';
+                splash.style.opacity = '0';
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    app.style.display = 'block';
+                    if (window.initApp) window.initApp();
+                    if (window.loadChords) window.loadChords();
+                    if (window.loadScales) window.loadScales();
+                    if (window.initFavorites) window.initFavorites();
+                    if (window.updatePremiumUI) window.updatePremiumUI();
+                    if (typeof updateNavActive === 'function') updateNavActive('home');
+                }, 400);
+            }
+            
+            setTimeout(hideSplash, 2800);
+            splash.addEventListener('click', hideSplash);
+            splash.addEventListener('touchstart', hideSplash);
+            
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').catch(() => {});
+            }
+            
+            setTimeout(() => {
+                if (window.updatePremiumUI) window.updatePremiumUI();
+            }, 100);
+        }
+        
+        window.onload = initializeApp;
+    </script>
+</body>
+</html>
